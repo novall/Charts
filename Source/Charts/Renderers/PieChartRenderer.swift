@@ -291,6 +291,7 @@ open class PieChartRenderer: DataRenderer
         let yValueSum = (data as! PieChartData).yValueSum
         
         let drawEntryLabels = chart.isDrawEntryLabelsEnabled
+        let drawEntryLabelsMinimumAngle = chart.drawEntryLabelsMinimumAngle
         let usePercentValuesEnabled = chart.usePercentValuesEnabled
         let entryLabelColor = chart.entryLabelColor
         let entryLabelFont = chart.entryLabelFont
@@ -356,10 +357,10 @@ open class PieChartRenderer: DataRenderer
                 let sliceXBase = cos(transformedAngle * ChartUtils.Math.FDEG2RAD)
                 let sliceYBase = sin(transformedAngle * ChartUtils.Math.FDEG2RAD)
                 
-                let drawXOutside = drawEntryLabels && xValuePosition == .outsideSlice
-                let drawYOutside = drawValues && yValuePosition == .outsideSlice
-                let drawXInside = drawEntryLabels && xValuePosition == .insideSlice
-                let drawYInside = drawValues && yValuePosition == .insideSlice
+                let drawXOutside = sliceAngle > drawEntryLabelsMinimumAngle && drawEntryLabels && xValuePosition == .outsideSlice
+                let drawYOutside = sliceAngle > drawEntryLabelsMinimumAngle && drawValues && yValuePosition == .outsideSlice
+                let drawXInside = sliceAngle > drawEntryLabelsMinimumAngle && drawEntryLabels && xValuePosition == .insideSlice
+                let drawYInside = sliceAngle > drawEntryLabelsMinimumAngle && drawValues && yValuePosition == .insideSlice
                 
                 let valueTextColor = dataSet.valueTextColorAt(j)
                 let entryLabelColor = dataSet.entryLabelColor

@@ -33,6 +33,7 @@
     self.options = @[
                      @{@"key": @"toggleValues", @"label": @"Toggle Y-Values"},
                      @{@"key": @"toggleXValues", @"label": @"Toggle X-Values"},
+                    @{@"key": @"toggleXValuesMinimumAngle", @"label": @"Toggle X-Values Minimum Angle"},
                      @{@"key": @"togglePercent", @"label": @"Toggle Percent"},
                      @{@"key": @"toggleHole", @"label": @"Toggle Hole"},
                      @{@"key": @"animateX", @"label": @"Animate X"},
@@ -47,6 +48,7 @@
     [self setupPieChartView:_chartView];
     
     _chartView.delegate = self;
+    _chartView.drawEntryLabelsMinimumAngle = 20;
     
     ChartLegend *l = _chartView.legend;
     l.horizontalAlignment = ChartLegendHorizontalAlignmentRight;
@@ -120,7 +122,7 @@
     pFormatter.percentSymbol = @" %";
     [data setValueFormatter:[[ChartDefaultValueFormatter alloc] initWithFormatter:pFormatter]];
     [data setValueFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:11.f]];
-    [data setValueTextColor:UIColor.whiteColor];
+    [data setValueTextColor:UIColor.blackColor];
     
     _chartView.data = data;
     [_chartView highlightValues:nil];
@@ -133,6 +135,16 @@
         _chartView.drawSliceTextEnabled = !_chartView.isDrawSliceTextEnabled;
         
         [_chartView setNeedsDisplay];
+        return;
+    }
+    
+    if ([key isEqualToString:@"toggleXValuesMinimumAngle"])
+    {
+        if (_chartView.drawSliceTextMinimumAngle == 0){
+            _chartView.drawSliceTextMinimumAngle = 20;
+        } else {
+            _chartView.drawSliceTextMinimumAngle = 0;
+        }
         return;
     }
     
